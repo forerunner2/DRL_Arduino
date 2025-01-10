@@ -91,48 +91,31 @@ def evaluator(act_model, args):
     return rewards
 
 
-# def draw(path):
-    # x_data = []
-    # y_data = []
-
-    # 获取文件夹中所有的 txt 文件
-    # files = [f for f in os.listdir(path) if f.endswith('.txt')]
-    # for file in files:
-        # file_path = os.path.join(path, file)
-        # data = np.loadtxt(file_path)
-
-        # 假设第一列是横轴，第二列是纵轴
-        # x_values = data[:, 0]
-        # y_values = data[:, 1]
-
-        # x_data = x_values
-        # y_data.append(y_values)
-
-    # y_data = np.array(y_data)
-    # mean_y = np.mean(y_data, axis=0)
-    # std_y = np.std(y_data, axis=0)
-
-    # 绘制
-    # plt.plot(x_data, mean_y, label='reward', color='b')
-    # plt.fill_between(x_data, mean_y - std_y, mean_y + std_y, color='b', alpha=0.2)
-    # plt.xlabel('step')
-    # plt.ylabel('reward')
-    # plt.title('Reward Curve')
-    # plt.legend()
-    # plt.show()
-
 
 if __name__ == '__main__':
     """ 参数设置 """
     argparse = Config()  # 超参数、文件路径
     arduino = argparse.serial  # 串口
 
-    """ 训练与评估 """
+    """ 训练 """
     print("————————————————————————————————————Start training!!!——————————————————————————————————————")
     train_logging = train_agent(argparse)  # train_logging=(logging_rewards,logging_obj_critics,logging_obj_actors)
     print("——————————————————————————————————The training is over!!!——————————————————————————————————")
-    draw(argparse.cwd)   # 绘制训练曲线
-
+    
+    """ 绘制训练曲线 """
+    path = argparse.cwd
+    label = {
+        'label_curve':'reward', 
+        'xlabel':'step', 
+        'ylabel':'reward', 
+        'title':'Curve of reward'}
+    color = {
+        'color1':'b', 
+        'color2':'b', 
+        'transparency':0.2}
+    draw(path, label, color)   # 绘制训练曲线
+    
+    """ 评估 """
     print("———————————————————————————————————Start evaluating!!!——————————————————————————————————————")
     actor = torch.load(f'{argparse.cwd}/actor.pt')
     evl_logging = evaluator(act_model=actor, args=argparse)
