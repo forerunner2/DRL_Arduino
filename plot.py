@@ -25,15 +25,18 @@ def draw(path, label, color):
     std_y = np.std(y_data, axis=0)
 
     # 绘制
-    plt.plot(x_data, mean_y, label='reward', color='b')
-    plt.fill_between(x_data, mean_y - std_y, mean_y + std_y, color='b', alpha=0.2)
-    plt.xlabel('step')
-    plt.ylabel('reward')
-    plt.title('Reward Curve')
+    plt.figure(dpi=1200)
+    plt.plot(x_data, mean_y, label=label['label_curve'], color=color['color1'])
+    plt.fill_between(x_data, mean_y - std_y, mean_y + std_y, color=color['color2'], alpha=color['transparency'])
+    plt.xlabel(label['xlabel'], fontsize=14, family='Times New Roman')
+    plt.ylabel(label['xlabel'], fontsize=14, family='Times New Roman')
+    plt.title(label['title'], fontsize=16, family='Times New Roman')
     plt.legend()
     plt.show()
+    plt.savefig(f'{label['label_curve']}.png', dpi=1200, save_path=path)
+
 
 
 if __name__ == "__main__":
-    main()
+    pass
 
